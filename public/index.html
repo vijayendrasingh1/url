@@ -1,1 +1,125 @@
-<h1>Shortlink System Running</h1>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>URL Shortener</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 320px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      border-color: #4facfe;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #4facfe;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #007bff;
+    }
+
+    #result {
+      margin-top: 15px;
+      word-break: break-all;
+    }
+
+    #result a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    #result a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>🔗 URL Shortener</h2>
+
+  <input id="url" placeholder="Enter your long URL">
+
+  <button onclick="shorten()">Generate Link</button>
+
+  <div id="result"></div>
+
+  <div class="footer">
+    Fast • Secure • Simple
+  </div>
+
+</div>
+
+<script>
+function shorten(){
+  let url = document.getElementById("url").value;
+
+  if(!url){
+    alert("Please enter a URL");
+    return;
+  }
+
+  fetch(`/api/shorten?url=${encodeURIComponent(url)}`)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").innerHTML =
+      `<a href="https://${data.short}" target="_blank">${data.short}</a>`;
+  })
+  .catch(() => {
+    alert("Error generating link");
+  });
+}
+</script>
+
+</body>
+</html>
