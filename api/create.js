@@ -2,7 +2,12 @@ let links = {};
 
 export default function handler(req, res) {
 
-  const { folder, url } = req.query;
+  let { folder, url } = req.query;
+
+  // 🔥 Auto add https
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = "https://" + url;
+  }
 
   const id = Math.random().toString(36).substring(2, 8);
 
