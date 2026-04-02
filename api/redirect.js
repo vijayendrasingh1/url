@@ -1,21 +1,23 @@
-let links = {
-  rtry: {
-    wxo9ez: "https://google.com"
+import { kv } from '@vercel/kv';
+
+export default async function handler(req, res) {
+
+  const id = req.url.slice(1);
+
+  const data = await kv.get(id);
+
+  if (!data) {
+    return res.status(404).send("Invalid Link");
   }
-};
 
-export default function handler(req, res) {
+  let obj = JSON.parse(data);
 
-  const parts = req.url.split("/");
-  const folder = parts[1];
-  const id = parts[2];
+  obj.clicks++;
 
-  if (links[folder] && links[folder][id]) {
-    res.writeHead(302, {
-      Location: links[folder][id]
-    });
-    res.end();
-  } else {
-    res.status(404).send("Invalid Link");
-  }
+  await kv.set(id, JSON.stringify(obj));
+
+  res.writeHead(302, {
+    Location: obj.url
+  });
+  res.end();
 }
