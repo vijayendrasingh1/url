@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+</head>
+<body style="text-align:center; font-family:sans-serif;">
+
+  <h2>Create Short Link</h2>
+
+  <input id="folder" placeholder="Folder (ex: okzn)">
+  <br><br>
+  <input id="url" placeholder="Enter URL">
+  <br><br>
+
+  <button onclick="create()">Generate</button>
+
+  <h3 id="result"></h3>
+
+  <hr>
+
+  <h2>Stats</h2>
+  <button onclick="loadStats()">Load Stats</button>
+
+  <pre id="stats"></pre>
+
+<script>
+
+function create(){
+  let f = document.getElementById("folder").value;
+  let u = document.getElementById("url").value;
+
+  fetch(`/api/create?folder=${f}&url=${u}`)
+  .then(r=>r.json())
+  .then(d=>{
+    document.getElementById("result").innerHTML = d.shortLink;
+  });
+}
+
+function loadStats(){
+  fetch("/api/stats")
+  .then(r=>r.json())
+  .then(d=>{
+    document.getElementById("stats").innerText = JSON.stringify(d, null, 2);
+  });
+}
+
+</script>
+
+</body>
+</html>
