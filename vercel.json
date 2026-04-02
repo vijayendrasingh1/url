@@ -2,9 +2,8 @@
   "routes": [
     { "handle": "filesystem" },
 
-    { "src": "^/admin$", "dest": "/admin/index.html" },
-    { "src": "^/admin/(.*)", "dest": "/admin/$1" },
+    { "src": "^/api/(.*)", "dest": "/api/$1.js" },
 
-    { "src": "^/(.*)/(.*)", "dest": "/api/redirect.js" }
+    { "src": "^/([a-zA-Z0-9]+)$", "dest": "/api/redirect.js" }
   ]
 }
